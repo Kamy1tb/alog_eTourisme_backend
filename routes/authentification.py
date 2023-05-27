@@ -1,9 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends,APIRouter, Form
 from prisma import Prisma
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime, timedelta
 from typing import Any
 import secrets
@@ -153,4 +151,39 @@ async def signup(user: SignUp):
             detail="L'adresse e-mail n'est pas valide.",
             headers={"WWW-SignUp": "Bearer"},
         )
+    
+@router.get("/state_mail")
+async def state_mail(mail:str):
+    print("dok nzidha")
+
+
+class Mail_verif(BaseModel):
+    email: str
+    token: int
+    
+    
+@router.post("/mail_verification")
+async def verify_mail(verif: Mail_verif):
+
+    correct_token = await prisma.validation_mail.find_first(
+        where={
+            "email" : verif.email
+        }
+    )
+
+    print(correct_token.token)
+    print(verif.token)
+    if correct_token.token == verif.token:
+        update = await prisma.users.update(
+            where={
+                "email": verif.email
+            },
+            data={
+                "ISVALID":1
+            }
+        )
+        return {"state" : "mail vérifié avec success"}
+    else:
+        return {"state": "le numéro introduit est incorrect"}
+
     
