@@ -154,6 +154,7 @@ async def signup(user: SignUp):
     
 @router.get("/state_mail")
 async def state_mail(mail:str):
+   #TODO
     print("dok nzidha")
 
 

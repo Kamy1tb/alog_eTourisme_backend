@@ -1,0 +1,26 @@
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = "5"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://fgqnfdxm_kamyl:3MHYhXMEf3j7DVm@178.32.109.176:3306/fgqnfdxm_alog_eTourisme"
+}
+
+model users {
+  id_user         Int              @id @default(autoincrement())
+  fullname        String           @db.VarChar(100)
+  email           String           @unique(map: "email") @db.VarChar(100)
+  phone           String           @db.VarChar(10)
+  password        String           @db.VarChar(200)
+  ISVALID         Int
+  address         String           @db.VarChar(100)
+  validation_mail validation_mail?
+}
+
+model validation_mail {
+  email String @id @db.VarChar(100)
+  token Int    @unique(map: "token")
+  users users  @relation(fields: [email], references: [email], onDelete: Cascade, map: "validation_mail_ibfk_1")
+}
