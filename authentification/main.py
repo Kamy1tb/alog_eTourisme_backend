@@ -15,7 +15,7 @@ app.include_router(router_authentification)
 
 
 
-@app.get("/")
+@app.get("/api1")
 async def read_root():
     return {"Service": "Authentification"}
 

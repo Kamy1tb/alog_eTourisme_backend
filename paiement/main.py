@@ -15,7 +15,7 @@ app.include_router(router_paiment)
 
 
 
-@app.get("/")
+@app.get("/api2")
 async def read_root():
     return {"Service": "Paiement"}
 

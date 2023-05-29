@@ -1,5 +1,4 @@
 from fastapi import FastAPI, HTTPException, Depends,APIRouter, Form
-from flask import redirect
 from prisma import Prisma
 from passlib.context import CryptContext
 from pydantic import BaseModel
@@ -29,7 +28,7 @@ class SignIn(BaseModel):
     email: str
     password: str
 
-@router.get("/checkout_session")
+@router.get("/api2/checkout_session")
 async def checkout():
     try:
         checkout_session = stripe.checkout.Session.create(
@@ -51,7 +50,7 @@ async def checkout():
 
 
 
-@router.get("/success_payment")
+@router.get("/api2/success_payment")
 async def success():
    
     

@@ -102,7 +102,7 @@ class SignIn(BaseModel):
     email: str
     password: str
 
-@router.post("/login")
+@router.post("/api1/login")
 
 async def login(user : SignIn):
     
@@ -124,7 +124,7 @@ class SignUp(BaseModel):
     address: str
 
 
-@router.post("/signup")
+@router.post("/api1/signup")
 async def signup(user: SignUp):
     is_valid = is_valid_email(user.email)
     if is_valid:
@@ -152,7 +152,7 @@ async def signup(user: SignUp):
             headers={"WWW-SignUp": "Bearer"},
         )
     
-@router.get("/state_mail")
+@router.get("/api1/state_mail")
 async def state_mail(mail:str):
    #TODO
     print("dok nzidha")
@@ -163,7 +163,7 @@ class Mail_verif(BaseModel):
     token: int
     
     
-@router.post("/mail_verification")
+@router.post("/api1/mail_verification")
 async def verify_mail(verif: Mail_verif):
 
     correct_token = await prisma.validation_mail.find_first(
