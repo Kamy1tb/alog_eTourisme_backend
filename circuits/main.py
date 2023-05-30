@@ -4,7 +4,7 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from routes.authentification import router as router_authentification
+from routes.circuits import router as router_circuits
 
 
 
@@ -12,11 +12,11 @@ app = FastAPI()
 
 prisma = Prisma()
 
-app.include_router(router_authentification)
+app.include_router(router_circuits)
 origins = [
     "http://localhost",
     "http://localhost:3000",
-    "http://localhost:8001"
+    "http://localhost:8003"
 ]
 
 app.add_middleware(
@@ -30,8 +30,8 @@ app.add_middleware(
 
 
 
-@app.get("/api1")
+@app.get("/api3")
 async def read_root():
-    return {"Service": "Authentification"}
+    return {"Service": "circuits"}
 
 

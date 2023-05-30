@@ -40,8 +40,8 @@ async def checkout():
                    
             ],
             mode="payment"  ,
-            success_url= "http://localhost:8000/success_payment",
-            cancel_url="http://localhost:8000/failure_payment"
+            success_url= "http://localhost:80/api2/success_payment",
+            cancel_url="http://localhost:80/api2/cancel_payment"
         )
     except Exception as e:
         return str(e)
@@ -56,8 +56,7 @@ async def success():
     
     return {"statut" : "payment validé"}
  
-@router.get("/cancel_payment")
+@router.get("/api2/cancel_payment")
 async def cancel():
    
-    
     return {"statut" : "payment annulé"}

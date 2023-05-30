@@ -24,3 +24,69 @@ model validation_mail {
   token Int    @unique(map: "token")
   users users  @relation(fields: [email], references: [email], onDelete: Cascade, map: "validation_mail_ibfk_1")
 }
+
+model Agence {
+  id_agence   Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  address     String    @db.VarChar(200)
+  logo        String?   @db.VarChar(999)
+  description String?   @db.VarChar(999)
+  num_ro      Int       @map("numéro")
+  circuit     circuit[]
+}
+
+model activit_ {
+  id_activit_      Int                @id @default(autoincrement()) @map("id_activité")
+  nom              String             @db.VarChar(100)
+  description      String?            @db.VarChar(999)
+  logo             String?            @db.VarChar(999)
+  circuit_activit_ circuit_activit_[]
+
+  @@map("activité")
+}
+
+model circuit {
+  id_circuit       Int                @id @default(autoincrement())
+  nom              String             @db.VarChar(100)
+  id_agence        Int
+  description      String             @db.VarChar(999)
+  prix             Int
+  cle_stripe       String             @unique(map: "cle_stripe") @db.VarChar(200)
+  d_but            DateTime           @map("début") @db.DateTime(0)
+  fin              DateTime           @db.DateTime(0)
+  Agence           Agence             @relation(fields: [id_agence], references: [id_agence], onDelete: Cascade, map: "circuit_ibfk_1")
+  circuit_activit_ circuit_activit_[]
+  circuit_point    circuit_point[]
+
+  @@index([id_agence], map: "id_agence")
+}
+
+model circuit_activit_ {
+  id_activit_ Int      @map("id_activité")
+  id_circuit  Int
+  activit_    activit_ @relation(fields: [id_activit_], references: [id_activit_], onDelete: Cascade, map: "ilbl")
+  circuit     circuit  @relation(fields: [id_circuit], references: [id_circuit], onDelete: Cascade, map: "circuit_activité_ibfk_1")
+
+  @@id([id_activit_, id_circuit])
+  @@index([id_circuit], map: "cons2")
+  @@map("circuit_activité")
+}
+
+model point_interet {
+  id_interet    Int             @id @default(autoincrement())
+  name          String          @db.VarChar(100)
+  image         String?         @db.VarChar(999)
+  localisation  String          @db.VarChar(200)
+  description   String?         @db.VarChar(999)
+  circuit_point circuit_point[]
+}
+
+model circuit_point {
+  id_circuit    Int
+  id_interet    Int
+  circuit       circuit       @relation(fields: [id_circuit], references: [id_circuit], onDelete: Cascade, map: "cont1")
+  point_interet point_interet @relation(fields: [id_interet], references: [id_interet], onDelete: Cascade, map: "cont2")
+
+  @@id([id_circuit, id_interet])
+  @@index([id_interet], map: "cont2")
+}
